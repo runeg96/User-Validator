@@ -1,0 +1,902 @@
+[
+  {
+    "Navn": "Peter Christensen",
+    "Alder": 53,
+    "Email": "peterchristensen@gmail.com",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2009-02-01",
+    "Mobilnummer": "94254245",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Smith",
+    "Alder": 55,
+    "Email": "mariasmith@invalid-email",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2004-08-19",
+    "Mobilnummer": "36487979",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Anna Hansen",
+    "Alder": 30,
+    "Email": "annahansen@yahoo.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2003-02-22",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Emma Taylor",
+    "Alder": 21,
+    "Email": "emmataylor@gmail.com",
+    "Spilleplatform": "Switch, Xbox, PlayStation",
+    "Oprettelsesdato": "2014-11-10",
+    "Mobilnummer": "31936639",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "John Hansen",
+    "Alder": 60,
+    "Email": "johnhansen@invalid-email",
+    "Spilleplatform": "Xbox, PC, Switch, PlayStation",
+    "Oprettelsesdato": "2009-05-08",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Nielsen",
+    "Alder": 47,
+    "Email": "sofienielsen@gmail.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2013-04-09",
+    "Mobilnummer": null,
+    "Telefonnummer": "10046959"
+  },
+  {
+    "Navn": "Sofie Møller",
+    "Alder": 49,
+    "Email": "sofiemøller@yahoo.com",
+    "Spilleplatform": "PlayStation, Switch",
+    "Oprettelsesdato": "2016-04-17",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "John Taylor",
+    "Alder": 20,
+    "Email": "johntaylor@gmail.com",
+    "Spilleplatform": "Switch, PlayStation, Xbox, PC",
+    "Oprettelsesdato": "2015-05-16",
+    "Mobilnummer": null,
+    "Telefonnummer": "35736655"
+  },
+  {
+    "Navn": "Anna Jensen",
+    "Alder": 48,
+    "Email": "annajensen@example.com",
+    "Spilleplatform": "PlayStation, Xbox",
+    "Oprettelsesdato": "2002-12-01",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Taylor",
+    "Alder": 49,
+    "Email": "mariataylor@yahoo.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2017-10-24",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Jensen",
+    "Alder": 62,
+    "Email": "sofiejensen@yahoo.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2009-06-18",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Peter Jensen",
+    "Alder": 68,
+    "Email": "peterjensen@outlook.com",
+    "Spilleplatform": "PC, Xbox, PlayStation",
+    "Oprettelsesdato": "2022-07-10",
+    "Mobilnummer": "61076536",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Ella Hansen",
+    "Alder": 41,
+    "Email": "ellahansen@example.com",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2017-10-18",
+    "Mobilnummer": "78919963",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Taylor",
+    "Alder": 69,
+    "Email": "sofietaylor@invalid-email",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2017-07-20",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "John Taylor",
+    "Alder": 32,
+    "Email": "johntaylor@invalid-email",
+    "Spilleplatform": "PlayStation, PC, Xbox",
+    "Oprettelsesdato": "2005-06-26",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Oliver Brown",
+    "Alder": 28,
+    "Email": "oliverbrown@outlook.com",
+    "Spilleplatform": "Switch, PlayStation",
+    "Oprettelsesdato": "2002-11-19",
+    "Mobilnummer": "68893818",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Smith",
+    "Alder": 44,
+    "Email": "sofiesmith@gmail.com",
+    "Spilleplatform": "PC, Switch, Xbox, PlayStation",
+    "Oprettelsesdato": "2006-10-23",
+    "Mobilnummer": "17953044",
+    "Telefonnummer": "72436204"
+  },
+  {
+    "Navn": "Ella Jensen",
+    "Alder": 35,
+    "Email": "ellajensen@yahoo.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2023-06-11",
+    "Mobilnummer": "20520942",
+    "Telefonnummer": "59745368"
+  },
+  {
+    "Navn": "Anna Møller",
+    "Alder": 66,
+    "Email": "annamøller@yahoo.com",
+    "Spilleplatform": "PlayStation, Xbox",
+    "Oprettelsesdato": "2018-08-26",
+    "Mobilnummer": "43928672",
+    "Telefonnummer": "69752181"
+  },
+  {
+    "Navn": "Sofie Jones",
+    "Alder": 29,
+    "Email": "sofiejones@yahoo.com",
+    "Spilleplatform": "Switch, PC, Xbox, PlayStation",
+    "Oprettelsesdato": "2008-04-03",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Nielsen",
+    "Alder": 70,
+    "Email": "sofienielsen@gmail.com",
+    "Spilleplatform": "PC, Switch, Xbox, PlayStation",
+    "Oprettelsesdato": "2010-09-30",
+    "Mobilnummer": "37758761",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Emma Jensen",
+    "Alder": 42,
+    "Email": "emmajensen@invalid-email",
+    "Spilleplatform": "PlayStation, Switch, Xbox",
+    "Oprettelsesdato": "2010-06-26",
+    "Mobilnummer": "96891449",
+    "Telefonnummer": "45916809"
+  },
+  {
+    "Navn": "Ella Pedersen",
+    "Alder": 27,
+    "Email": "ellapedersen@invalid-email",
+    "Spilleplatform": "Xbox, PlayStation, Switch, PC",
+    "Oprettelsesdato": "2003-05-28",
+    "Mobilnummer": "55627224",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Ella Smith",
+    "Alder": 60,
+    "Email": "ellasmith@yahoo.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2000-07-31",
+    "Mobilnummer": "74244934",
+    "Telefonnummer": "94665603"
+  },
+  {
+    "Navn": "Emma Nielsen",
+    "Alder": 37,
+    "Email": "emmanielsen@gmail.com",
+    "Spilleplatform": "PlayStation, Xbox, Switch",
+    "Oprettelsesdato": "2007-04-02",
+    "Mobilnummer": null,
+    "Telefonnummer": "44461848"
+  },
+  {
+    "Navn": "Anna Jensen",
+    "Alder": 46,
+    "Email": "annajensen@example.com",
+    "Spilleplatform": "Switch, PC, Xbox, PlayStation",
+    "Oprettelsesdato": "2021-07-04",
+    "Mobilnummer": null,
+    "Telefonnummer": "71207720"
+  },
+  {
+    "Navn": "Liam Møller",
+    "Alder": 48,
+    "Email": "liammøller@yahoo.com",
+    "Spilleplatform": "PC, Xbox, PlayStation, Switch",
+    "Oprettelsesdato": "2015-07-03",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Oliver Christensen",
+    "Alder": 37,
+    "Email": "oliverchristensen@yahoo.com",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2010-04-12",
+    "Mobilnummer": "55659435",
+    "Telefonnummer": "45255453"
+  },
+  {
+    "Navn": "Lucas Møller",
+    "Alder": 31,
+    "Email": "lucasmøller@outlook.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2022-10-13",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Nielsen",
+    "Alder": 33,
+    "Email": "sofienielsen@invalid-email",
+    "Spilleplatform": "Xbox, Switch",
+    "Oprettelsesdato": "2019-03-04",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Ella Møller",
+    "Alder": 47,
+    "Email": "ellamøller@gmail.com",
+    "Spilleplatform": "PlayStation, PC, Switch, Xbox",
+    "Oprettelsesdato": "2008-08-24",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Pedersen",
+    "Alder": 66,
+    "Email": "mariapedersen@outlook.com",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2001-05-04",
+    "Mobilnummer": null,
+    "Telefonnummer": "59667452"
+  },
+  {
+    "Navn": "Oliver Nielsen",
+    "Alder": 58,
+    "Email": "olivernielsen@example.com",
+    "Spilleplatform": "Switch, PlayStation, PC, Xbox",
+    "Oprettelsesdato": "2015-12-12",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Pedersen",
+    "Alder": 56,
+    "Email": "sofiepedersen@invalid-email",
+    "Spilleplatform": "Switch, PlayStation, Xbox",
+    "Oprettelsesdato": "2022-07-04",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Lucas Jones",
+    "Alder": 58,
+    "Email": "lucasjones@example.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2012-04-12",
+    "Mobilnummer": "24253996",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Liam Hansen",
+    "Alder": 21,
+    "Email": "liamhansen@yahoo.com",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2002-03-26",
+    "Mobilnummer": "33388085",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Anna Taylor",
+    "Alder": 53,
+    "Email": "annataylor@example.com",
+    "Spilleplatform": "Switch, PC, Xbox",
+    "Oprettelsesdato": "2004-11-04",
+    "Mobilnummer": null,
+    "Telefonnummer": "35254850"
+  },
+  {
+    "Navn": "Lucas Smith",
+    "Alder": 37,
+    "Email": "lucassmith@yahoo.com",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2009-03-08",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Oliver Nielsen",
+    "Alder": 45,
+    "Email": "olivernielsen@yahoo.com",
+    "Spilleplatform": "Switch, PC, PlayStation",
+    "Oprettelsesdato": "2019-10-01",
+    "Mobilnummer": "78766025",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Brown",
+    "Alder": 68,
+    "Email": "sofiebrown@outlook.com",
+    "Spilleplatform": "Xbox, Switch",
+    "Oprettelsesdato": "2014-12-12",
+    "Mobilnummer": "63773063",
+    "Telefonnummer": "25607981"
+  },
+  {
+    "Navn": "Sofie Nielsen",
+    "Alder": 70,
+    "Email": "sofienielsen@gmail.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2001-01-21",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Ella Smith",
+    "Alder": 66,
+    "Email": "ellasmith@gmail.com",
+    "Spilleplatform": "Switch, Xbox",
+    "Oprettelsesdato": "2018-09-05",
+    "Mobilnummer": null,
+    "Telefonnummer": "69204007"
+  },
+  {
+    "Navn": "Maria Brown",
+    "Alder": 60,
+    "Email": "mariabrown@yahoo.com",
+    "Spilleplatform": "Switch, PC",
+    "Oprettelsesdato": "2017-11-13",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Smith",
+    "Alder": 23,
+    "Email": "mariasmith@yahoo.com",
+    "Spilleplatform": "Switch, PC, Xbox",
+    "Oprettelsesdato": "2006-11-07",
+    "Mobilnummer": null,
+    "Telefonnummer": "78108868"
+  },
+  {
+    "Navn": "John Møller",
+    "Alder": 43,
+    "Email": "johnmøller@example.com",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2018-08-22",
+    "Mobilnummer": null,
+    "Telefonnummer": "87722963"
+  },
+  {
+    "Navn": "Anna Taylor",
+    "Alder": 67,
+    "Email": "annataylor@invalid-email",
+    "Spilleplatform": "PlayStation, Xbox, Switch, PC",
+    "Oprettelsesdato": "2019-11-06",
+    "Mobilnummer": null,
+    "Telefonnummer": "26081361"
+  },
+  {
+    "Navn": "Peter Møller",
+    "Alder": 63,
+    "Email": "petermøller@yahoo.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2015-02-03",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Liam Brown",
+    "Alder": 36,
+    "Email": "liambrown@outlook.com",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2003-04-15",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Pedersen",
+    "Alder": 45,
+    "Email": "mariapedersen@example.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2001-04-01",
+    "Mobilnummer": "13205182",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Liam Smith",
+    "Alder": 30,
+    "Email": "liamsmith@yahoo.com",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2005-12-28",
+    "Mobilnummer": "45628516",
+    "Telefonnummer": "13816008"
+  },
+  {
+    "Navn": "John Jones",
+    "Alder": 41,
+    "Email": "johnjones@gmail.com",
+    "Spilleplatform": "PlayStation, Xbox, PC, Switch",
+    "Oprettelsesdato": "2016-09-20",
+    "Mobilnummer": "73293618",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Peter Hansen",
+    "Alder": 58,
+    "Email": "peterhansen@gmail.com",
+    "Spilleplatform": "PC, Switch, PlayStation, Xbox",
+    "Oprettelsesdato": "2014-02-05",
+    "Mobilnummer": "39101825",
+    "Telefonnummer": "38424284"
+  },
+  {
+    "Navn": "Liam Møller",
+    "Alder": 35,
+    "Email": "liammøller@example.com",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2021-05-19",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Brown",
+    "Alder": 30,
+    "Email": "mariabrown@example.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2007-01-23",
+    "Mobilnummer": null,
+    "Telefonnummer": "11859947"
+  },
+  {
+    "Navn": "Peter Brown",
+    "Alder": 51,
+    "Email": "peterbrown@invalid-email",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2013-05-21",
+    "Mobilnummer": "47925658",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Oliver Christensen",
+    "Alder": 25,
+    "Email": "oliverchristensen@outlook.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2013-01-06",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Liam Nielsen",
+    "Alder": 65,
+    "Email": "liamnielsen@yahoo.com",
+    "Spilleplatform": "Switch, PlayStation, PC, Xbox",
+    "Oprettelsesdato": "2017-01-23",
+    "Mobilnummer": "52449806",
+    "Telefonnummer": "26267564"
+  },
+  {
+    "Navn": "Sofie Hansen",
+    "Alder": 60,
+    "Email": "sofiehansen@gmail.com",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2018-06-12",
+    "Mobilnummer": null,
+    "Telefonnummer": "12488178"
+  },
+  {
+    "Navn": "Sofie Jensen",
+    "Alder": 36,
+    "Email": "sofiejensen@example.com",
+    "Spilleplatform": "Xbox, Switch, PlayStation, PC",
+    "Oprettelsesdato": "2005-09-21",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Jones",
+    "Alder": 30,
+    "Email": "sofiejones@outlook.com",
+    "Spilleplatform": "Xbox, PlayStation, PC",
+    "Oprettelsesdato": "2002-08-28",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Anna Hansen",
+    "Alder": 45,
+    "Email": "annahansen@gmail.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2015-07-30",
+    "Mobilnummer": "68128105",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Smith",
+    "Alder": 51,
+    "Email": "sofiesmith@yahoo.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2009-06-01",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Lucas Nielsen",
+    "Alder": 38,
+    "Email": "lucasnielsen@gmail.com",
+    "Spilleplatform": "PlayStation, Switch, PC, Xbox",
+    "Oprettelsesdato": "2012-12-05",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Emma Smith",
+    "Alder": 64,
+    "Email": "emmasmith@yahoo.com",
+    "Spilleplatform": "Switch, PC, Xbox",
+    "Oprettelsesdato": "2009-11-09",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Oliver Taylor",
+    "Alder": 19,
+    "Email": "olivertaylor@gmail.com",
+    "Spilleplatform": "PC, PlayStation, Switch, Xbox",
+    "Oprettelsesdato": "2012-05-20",
+    "Mobilnummer": "76735934",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Liam Jensen",
+    "Alder": 49,
+    "Email": "liamjensen@example.com",
+    "Spilleplatform": "PlayStation, Switch",
+    "Oprettelsesdato": "2015-11-13",
+    "Mobilnummer": null,
+    "Telefonnummer": "45407713"
+  },
+  {
+    "Navn": "Emma Jones",
+    "Alder": 69,
+    "Email": "emmajones@gmail.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2020-04-24",
+    "Mobilnummer": null,
+    "Telefonnummer": "40529838"
+  },
+  {
+    "Navn": "Anna Christensen",
+    "Alder": 22,
+    "Email": "annachristensen@yahoo.com",
+    "Spilleplatform": "Xbox, Switch",
+    "Oprettelsesdato": "2005-06-02",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Pedersen",
+    "Alder": 36,
+    "Email": "mariapedersen@gmail.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2019-03-15",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Oliver Smith",
+    "Alder": 52,
+    "Email": "oliversmith@outlook.com",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2003-03-11",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Peter Nielsen",
+    "Alder": 61,
+    "Email": "peternielsen@yahoo.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2011-12-17",
+    "Mobilnummer": "52574793",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Jones",
+    "Alder": 41,
+    "Email": "mariajones@yahoo.com",
+    "Spilleplatform": "PlayStation, Switch, PC",
+    "Oprettelsesdato": "2021-04-10",
+    "Mobilnummer": null,
+    "Telefonnummer": "91636986"
+  },
+  {
+    "Navn": "Emma Jones",
+    "Alder": 60,
+    "Email": "emmajones@example.com",
+    "Spilleplatform": "PlayStation, Switch",
+    "Oprettelsesdato": "2021-08-17",
+    "Mobilnummer": null,
+    "Telefonnummer": "75183975"
+  },
+  {
+    "Navn": "John Jones",
+    "Alder": 63,
+    "Email": "johnjones@invalid-email",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2013-04-22",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Emma Brown",
+    "Alder": 44,
+    "Email": "emmabrown@gmail.com",
+    "Spilleplatform": "PlayStation, PC, Switch",
+    "Oprettelsesdato": "2023-11-06",
+    "Mobilnummer": "93372668",
+    "Telefonnummer": "97911371"
+  },
+  {
+    "Navn": "Ella Smith",
+    "Alder": 41,
+    "Email": "ellasmith@gmail.com",
+    "Spilleplatform": "PC, Xbox, PlayStation, Switch",
+    "Oprettelsesdato": "2018-10-25",
+    "Mobilnummer": "20332585",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Lucas Hansen",
+    "Alder": 64,
+    "Email": "lucashansen@invalid-email",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2007-06-01",
+    "Mobilnummer": null,
+    "Telefonnummer": "36430793"
+  },
+  {
+    "Navn": "Sofie Møller",
+    "Alder": 20,
+    "Email": "sofiemøller@example.com",
+    "Spilleplatform": "Xbox, Switch, PlayStation",
+    "Oprettelsesdato": "2017-12-07",
+    "Mobilnummer": null,
+    "Telefonnummer": "73906862"
+  },
+  {
+    "Navn": "Lucas Jensen",
+    "Alder": 67,
+    "Email": "lucasjensen@yahoo.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2013-07-29",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Taylor",
+    "Alder": 35,
+    "Email": "mariataylor@invalid-email",
+    "Spilleplatform": "PC, Xbox, PlayStation, Switch",
+    "Oprettelsesdato": "2004-04-03",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Oliver Nielsen",
+    "Alder": 70,
+    "Email": "olivernielsen@yahoo.com",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2014-01-16",
+    "Mobilnummer": "48944714",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Peter Christensen",
+    "Alder": 47,
+    "Email": "peterchristensen@invalid-email",
+    "Spilleplatform": "Xbox, PC, PlayStation",
+    "Oprettelsesdato": "2020-01-23",
+    "Mobilnummer": null,
+    "Telefonnummer": "72453447"
+  },
+  {
+    "Navn": "Ella Christensen",
+    "Alder": 52,
+    "Email": "ellachristensen@outlook.com",
+    "Spilleplatform": "PC, Switch, PlayStation",
+    "Oprettelsesdato": "2005-09-14",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Emma Møller",
+    "Alder": 62,
+    "Email": "emmamøller@gmail.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2002-09-28",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Anna Jensen",
+    "Alder": 53,
+    "Email": "annajensen@example.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2005-08-18",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "John Pedersen",
+    "Alder": 25,
+    "Email": "johnpedersen@example.com",
+    "Spilleplatform": "PlayStation, Xbox",
+    "Oprettelsesdato": "2019-01-27",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Ella Jones",
+    "Alder": 44,
+    "Email": "ellajones@invalid-email",
+    "Spilleplatform": "PC, Xbox, PlayStation, Switch",
+    "Oprettelsesdato": "2011-10-23",
+    "Mobilnummer": "97037014",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Sofie Møller",
+    "Alder": 36,
+    "Email": "sofiemøller@gmail.com",
+    "Spilleplatform": "Xbox, PC",
+    "Oprettelsesdato": "2009-10-20",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Emma Taylor",
+    "Alder": 56,
+    "Email": "emmataylor@outlook.com",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2021-07-22",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Anna Jensen",
+    "Alder": 28,
+    "Email": "annajensen@gmail.com",
+    "Spilleplatform": "PlayStation",
+    "Oprettelsesdato": "2008-05-20",
+    "Mobilnummer": "89948806",
+    "Telefonnummer": "19752488"
+  },
+  {
+    "Navn": "Peter Jones",
+    "Alder": 55,
+    "Email": "peterjones@gmail.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2003-07-09",
+    "Mobilnummer": "39537509",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Emma Christensen",
+    "Alder": 35,
+    "Email": "emmachristensen@yahoo.com",
+    "Spilleplatform": "Switch, PlayStation",
+    "Oprettelsesdato": "2002-01-03",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Lucas Taylor",
+    "Alder": 18,
+    "Email": "lucastaylor@gmail.com",
+    "Spilleplatform": "PC, PlayStation",
+    "Oprettelsesdato": "2017-12-03",
+    "Mobilnummer": "42347881",
+    "Telefonnummer": "22000338"
+  },
+  {
+    "Navn": "Anna Taylor",
+    "Alder": 29,
+    "Email": "annataylor@gmail.com",
+    "Spilleplatform": "Switch",
+    "Oprettelsesdato": "2017-11-27",
+    "Mobilnummer": null,
+    "Telefonnummer": "72164273"
+  },
+  {
+    "Navn": "Emma Smith",
+    "Alder": 56,
+    "Email": "emmasmith@example.com",
+    "Spilleplatform": "Xbox",
+    "Oprettelsesdato": "2019-10-09",
+    "Mobilnummer": null,
+    "Telefonnummer": "74604477"
+  },
+  {
+    "Navn": "Peter Jensen",
+    "Alder": 51,
+    "Email": "peterjensen@example.com",
+    "Spilleplatform": "Xbox, PlayStation, PC, Switch",
+    "Oprettelsesdato": "2010-08-21",
+    "Mobilnummer": "61567909",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Peter Brown",
+    "Alder": 26,
+    "Email": "peterbrown@outlook.com",
+    "Spilleplatform": "PC",
+    "Oprettelsesdato": "2023-09-02",
+    "Mobilnummer": null,
+    "Telefonnummer": "74613158"
+  },
+  {
+    "Navn": "Maria Taylor",
+    "Alder": 40,
+    "Email": "mariataylor@outlook.com",
+    "Spilleplatform": "Switch, PC, PlayStation, Xbox",
+    "Oprettelsesdato": "2010-03-09",
+    "Mobilnummer": null,
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Maria Jones",
+    "Alder": 60,
+    "Email": "mariajones@invalid-email",
+    "Spilleplatform": "Xbox, PlayStation, Switch, PC",
+    "Oprettelsesdato": "2024-01-12",
+    "Mobilnummer": "79396024",
+    "Telefonnummer": null
+  },
+  {
+    "Navn": "Peter Nielsen",
+    "Alder": 41,
+    "Email": "peternielsen@outlook.com",
+    "Spilleplatform": "PlayStation, Xbox, Switch",
+    "Oprettelsesdato": "2001-02-11",
+    "Mobilnummer": null,
+    "Telefonnummer": "75593489"
+  }
+]

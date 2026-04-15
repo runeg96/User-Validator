@@ -1,0 +1,17 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["Navn", "Alder", "Email", "Spilleplatform", "Oprettelsesdato"],
+    "properties": {
+      "Navn": { "type": "string", "minLength": 1 },
+      "Alder": { "type": "integer", "minimum": 0 },
+      "Email": { "type": "string", "minLength": 1 },
+      "Spilleplatform": { "type": "string", "minLength": 1 },
+      "Oprettelsesdato": { "type": "string", "minLength": 1 },
+      "Mobilnummer": { "type": ["string", "null"] },
+      "Telefonnummer": { "type": ["string", "null"] }
+    },
+    "additionalProperties": false
+  }
+}
