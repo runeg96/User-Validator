@@ -2,7 +2,7 @@
 
 #include <regex>
 
-void EmailValidator::validate(const User& i_user, std::vector<ValidationError>& io_errors) const
+void EmailValidator::validate(const User& i_user, std::vector<ErrorDetail>& io_errors) const
 {
     static const std::regex emailPattern(
         R"(^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$)");
@@ -13,7 +13,7 @@ void EmailValidator::validate(const User& i_user, std::vector<ValidationError>& 
     }
 }
 
-void ContactValidator::validate(const User& i_user, std::vector<ValidationError>& io_errors) const
+void ContactValidator::validate(const User& i_user, std::vector<ErrorDetail>& io_errors) const
 {
     const bool hasMobile = i_user.mobileNumber.has_value() && !i_user.mobileNumber->empty();
     const bool hasPhone  = i_user.phoneNumber.has_value() && !i_user.phoneNumber->empty();
@@ -25,7 +25,7 @@ void ContactValidator::validate(const User& i_user, std::vector<ValidationError>
     }
 }
 
-void PlatformsValidator::validate(const User& i_user, std::vector<ValidationError>& io_errors) const
+void PlatformsValidator::validate(const User& i_user, std::vector<ErrorDetail>& io_errors) const
 {
     if (i_user.platforms.size() < 2)
     {

@@ -3,8 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include "errors/error_detail.hpp"
 #include "validator/base_validator.hpp"
-#include "validator/validation_error.hpp"
 
 class UserValidator
 {
@@ -16,10 +16,10 @@ public:
     /// @param i_validator A unique pointer to the custom validator to add.
     void addValidator(std::unique_ptr<BaseValidator> i_validator);
 
-    /// @brief Validates a User object against all registered validators and returns a vector of ValidationError objects representing any validation errors found. Each validator will be applied to the User object, and any errors will be collected and returned as a list.
+    /// @brief Validates a User object against all registered validators and returns a vector of ErrorDetail objects representing any validation issues found. Each validator will be applied to the User object, and any issues will be collected and returned as a list.
     /// @param i_user The User object to validate.
-    /// @return A vector of ValidationError objects containing details about any validation errors that were found
-    std::vector<ValidationError> validate(const User& i_user) const;
+    /// @return A vector of ErrorDetail objects containing details about any validation issues that were found
+    std::vector<ErrorDetail> validate(const User& i_user) const;
 
 private:
     std::vector<std::unique_ptr<BaseValidator>> m_validators;

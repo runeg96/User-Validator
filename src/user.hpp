@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "validator/validation_error.hpp"
-
 struct User
 {
     std::string name;
@@ -15,10 +13,4 @@ struct User
     std::string createdAt;
     std::optional<std::string> mobileNumber;
     std::optional<std::string> phoneNumber;
-};
-
-struct InvalidUser
-{
-    User user;
-    std::vector<ValidationError> errors;
 };
