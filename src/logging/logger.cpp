@@ -14,6 +14,12 @@
 
 namespace {
 
+Logger& getDefaultLoggerStorage()
+{
+    static Logger logger;
+    return logger;
+}
+
 std::string getTimestamp()
 {
     const auto now            = std::chrono::system_clock::now();
@@ -31,7 +37,66 @@ std::string getTimestamp()
     return stream.str();
 }
 
+const char* toString(const LogStage i_stage)
+{
+    switch (i_stage)
+    {
+        case LogStage::Parser:
+            return "parser";
+        case LogStage::Validator:
+            return "validator";
+        case LogStage::Export:
+            return "export";
+        case LogStage::Summary:
+            return "summary";
+        case LogStage::Schema:
+            return "schema";
+    }
+
+    return "unknown";
+}
+
+const char* toString(const Severity i_severity)
+{
+    switch (i_severity)
+    {
+        case Severity::Info:
+            return "info";
+        case Severity::Error:
+            return "error";
+    }
+
+    return "unknown";
+}
+
 } // namespace
+
+Logger& Logger::defaultLogger()
+{
+    return getDefaultLoggerStorage();
+}
+
+bool Logger::initializeDefault(const std::filesystem::path& i_logPath, bool i_mirrorToConsole)
+{
+    Logger& logger = defaultLogger();
+    logger.setMirrorToConsole(i_mirrorToConsole);
+    return logger.initialize(i_logPath);
+}
+
+bool Logger::info(LogStage i_stage, const std::string& i_message, const char* i_functionName)
+{
+    return logDefault(LogEntry{ i_stage, Severity::Info, i_functionName, i_message });
+}
+
+bool Logger::error(LogStage i_stage, const std::string& i_message, const char* i_functionName)
+{
+    return logDefault(LogEntry{ i_stage, Severity::Error, i_functionName, i_message });
+}
+
+bool Logger::logDefault(const LogEntry& i_entry)
+{
+    return defaultLogger().log(i_entry);
+}
 
 Logger::Logger(std::filesystem::path i_logPath, bool i_mirrorToConsole)
     : m_logPath(std::move(i_logPath))
@@ -110,16 +175,11 @@ void Logger::setMirrorToConsole(bool i_mirrorToConsole)
 std::string Logger::formatEntry(const LogEntry& i_entry) const
 {
     std::ostringstream stream;
-    stream << '[' << getTimestamp() << "] [" << i_entry.severity << "] [" << i_entry.stage << ']';
+    stream << '[' << getTimestamp() << "] [" << toString(i_entry.severity) << "] [" << toString(i_entry.stage) << ']';
 
-    if (i_entry.userIndex.has_value())
+    if (!i_entry.functionName.empty())
     {
-        stream << " [user-index=" << *i_entry.userIndex << ']';
-    }
-
-    if (i_entry.userName.has_value() && !i_entry.userName->empty())
-    {
-        stream << " [user-name=" << *i_entry.userName << ']';
+        stream << " [" << i_entry.functionName << ']';
     }
 
     stream << ' ' << i_entry.message;

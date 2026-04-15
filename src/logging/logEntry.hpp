@@ -1,14 +1,26 @@
 #pragma once
 
-#include <cstddef>
-#include <optional>
 #include <string>
+
+enum class LogStage
+{
+    Parser,
+    Validator,
+    Export,
+    Summary,
+    Schema
+};
+
+enum class Severity
+{
+    Info  = 0,
+    Error = 1
+};
 
 struct LogEntry
 {
-    std::string stage;
-    std::string severity;
-    std::optional<std::size_t> userIndex;
-    std::optional<std::string> userName;
+    LogStage stage;
+    Severity severity;
+    std::string functionName;
     std::string message;
 };
