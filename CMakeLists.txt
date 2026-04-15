@@ -16,12 +16,6 @@ configure_file(
     COPYONLY
 )
 
-configure_file(
-    ${CMAKE_SOURCE_DIR}/src/parser/users.schema.json
-    ${CMAKE_BINARY_DIR}/users.schema.json
-    COPYONLY
-)
-
 # Build pugixml as a separate target.
 add_library(pugixml STATIC
     external/pugixml/src/pugixml.cpp
@@ -33,8 +27,9 @@ target_include_directories(pugixml
 )
 
 add_executable(json_parser
+    src/parser/parser_common.cpp
     src/parser/user_parser.cpp
-    src/utils/file_utils.cpp
+    src/utils/utils.cpp
     src/validator/user_rules.cpp
     src/validator/user_validator.cpp
     src/mapper/user_json_mapper.cpp
@@ -63,9 +58,4 @@ target_link_libraries(json_parser PRIVATE pugixml)
 
 install(TARGETS json_parser
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
-install(FILES
-    ${CMAKE_SOURCE_DIR}/src/parser/users.schema.json
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/json_parser
 )

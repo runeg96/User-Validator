@@ -8,19 +8,15 @@
 #include <rapidjson/document.h>
 #include <rapidjson/schema.h>
 
+#include "errors/error_detail.hpp"
+#include "errors/rejected_record.hpp"
 #include "user.hpp"
-#include "validator/record_error.hpp"
-#include "validator/validation_error.hpp"
-
-class Logger;
 
 class UserParser
 {
 public:
-    /// @brief Initializes the parser with a JSON schema.
-    /// @param i_schemaPath The path to the JSON schema file.
-    /// @return True if initialization was successful, false otherwise.
-    bool init(const std::string& i_schemaPath);
+    /// @brief Initializes the parser with the built-in JSON schema.
+    UserParser();
 
     /// @brief Parses a single user from a JSON string.
     /// @param i_jsonString The JSON string containing user data.
@@ -37,24 +33,37 @@ public:
     /// @brief Parses multiple users from a JSON string.
     /// @param i_jsonString The JSON string containing user data.
     /// @param io_users The vector to populate with parsed User objects.
-    /// @param o_recordErrors The vector to populate with parser/schema errors for skipped records.
-    /// @param i_logger Optional logger used to emit runtime parse errors.
+    /// @param o_rejectedRecords The vector to populate with parser/schema issues for skipped records.
     /// @return True if parsing and validation were successful, false otherwise.
-    bool parseUsers(const std::string& i_jsonString, std::vector<User>& io_users, std::vector<RecordError>& o_recordErrors, const Logger* i_logger = nullptr) const;
+    bool parseUsers(const std::string& i_jsonString, std::vector<User>& io_users, std::vector<RejectedRecord>& o_rejectedRecords) const;
 
     /// @brief Parses multiple users from a JSON file.
     /// @param i_jsonPath The path to the JSON file containing user data.
     /// @param io_users The vector to populate with parsed User objects.
-    /// @param o_recordErrors The vector to populate with parser/schema errors for skipped records.
-    /// @param i_logger Optional logger used to emit runtime parse errors.
+    /// @param o_rejectedRecords The vector to populate with parser/schema issues for skipped records.
     /// @return True if parsing and validation were successful, false otherwise.
-    bool parseUsersFromFile(const std::string& i_jsonPath, std::vector<User>& io_users, std::vector<RecordError>& o_recordErrors, const Logger* i_logger = nullptr) const;
+    bool parseUsersFromFile(const std::string& i_jsonPath, std::vector<User>& io_users, std::vector<RejectedRecord>& o_rejectedRecords) const;
 
 private:
-    /// @brief Loads the JSON schema from a file.
-    /// @param i_schemaPath The path to the JSON schema file.
-    /// @return True if the schema was loaded successfully, false otherwise.
-    bool loadSchema(const std::string& i_schemaPath);
+    /// @brief Validates a JSON object against the user schema.
+    /// @param i_jsonUser The JSON object containing user data.
+    /// @param o_schemaError The ErrorDetail object to populate with schema validation errors.
+    /// @return True if the JSON object is valid, false otherwise.
+    bool validateUser(const rapidjson::Value& i_jsonUser, ErrorDetail* o_schemaError) const;
+
+    /// @brief Parses a JSON value into a User object and validates it against the schema.
+    /// @param i_jsonValue The JSON value containing user data.
+    /// @param io_user The User object to populate with parsed data.
+    /// @param o_schemaError The ErrorDetail object to populate with schema validation errors.
+    /// @return True if parsing and validation were successful, false otherwise.
+    bool parseUser(const rapidjson::Value& i_jsonValue, User& io_user, ErrorDetail* o_schemaError = nullptr) const;
+
+    /// @brief Parses a JSON array into multiple User objects and validates each against the schema.
+    /// @param i_jsonValue The JSON value containing an array of user data.
+    /// @param io_users The vector to populate with parsed User objects.
+    /// @param o_rejectedRecords The vector to populate with parser/schema issues for skipped records.
+    /// @return True if parsing and validation were successful, false otherwise.
+    bool parseUsers(const rapidjson::Value& i_jsonValue, std::vector<User>& io_users, std::vector<RejectedRecord>& o_rejectedRecords) const;
 
     /// @brief Maps a JSON object to a User object.
     /// @param i_jsonUser The JSON object containing user data.
@@ -62,28 +71,6 @@ private:
     /// @return True if mapping was successful, false otherwise.
     bool mapUser(const rapidjson::Value& i_jsonUser, User& io_user) const;
 
-    /// @brief Maps a JSON array to a vector of User objects.
-    /// @param i_jsonArray The JSON array containing user data.
-    /// @param io_users The vector to populate with parsed User objects.
-    /// @param o_recordErrors The vector to populate with parser/schema errors for skipped records.
-    /// @param i_logger Optional logger used to emit runtime parse errors.
-    /// @return True if mapping was successful, false otherwise.
-    bool mapUsers(const rapidjson::Value& i_jsonArray, std::vector<User>& io_users, std::vector<RecordError>& o_recordErrors, const Logger* i_logger) const;
-
-    /// @brief Validates a JSON value against a JSON schema.
-    /// @param i_jsonValue The JSON value to validate.
-    /// @param i_schema The JSON schema to validate against.
-    /// @param o_error Optional output for schema validation details.
-    /// @return True if validation was successful, false otherwise.
-    bool validateSchema(const rapidjson::Value& i_jsonValue, const rapidjson::SchemaDocument& i_schema, ValidationError* o_error = nullptr) const;
-
-    /// @brief Helper function that splits a comma-separated string of platforms into a vector of strings.
-    /// @param i_platforms The comma-separated string of platforms.
-    /// @return A vector of individual platform strings.
-    static std::vector<std::string> splitPlatforms(const std::string& i_platforms);
-
-    rapidjson::Document m_schemaJson;
     rapidjson::Document m_userSchemaJson;
-    std::unique_ptr<rapidjson::SchemaDocument> m_schema;
     std::unique_ptr<rapidjson::SchemaDocument> m_userSchema;
 };

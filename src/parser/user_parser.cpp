@@ -1,84 +1,77 @@
 #include "user_parser.hpp"
 
-#include <rapidjson/error/en.h>
-#include <rapidjson/stringbuffer.h>
-
-#include <iostream>
-#include <optional>
-#include <sstream>
-#include <utility>
-
 #include "logging/logEntry.hpp"
 #include "logging/logger.hpp"
 #include "mapper/user_json_mapper.hpp"
-#include "utils/file_utils.hpp"
+#include "parser/parser_common.hpp"
+#include "utils/utils.hpp"
 
 namespace {
 
-std::optional<std::string> extractUserName(const rapidjson::Value& i_jsonUser)
+constexpr const char* c_userSchema = R"json(
 {
-    if (!i_jsonUser.IsObject())
-    {
-        return std::nullopt;
-    }
+    "type": "object",
+    "required": ["Navn", "Alder", "Email", "Spilleplatform", "Oprettelsesdato"],
+    "properties": {
+        "Navn": { "type": "string", "minLength": 1 },
+        "Alder": { "type": "integer", "minimum": 0 },
+        "Email": { "type": "string", "minLength": 1 },
+        "Spilleplatform": { "type": "string", "minLength": 1 },
+        "Oprettelsesdato": { "type": "string", "minLength": 1 },
+        "Mobilnummer": { "type": ["string", "null"] },
+        "Telefonnummer": { "type": ["string", "null"] }
+    },
+    "additionalProperties": false
+}
+)json";
 
-    if (!i_jsonUser.HasMember("Navn") || !i_jsonUser["Navn"].IsString())
+std::string extractUserName(const rapidjson::Value& i_jsonUser)
+{
+    if (!i_jsonUser.IsObject() || !i_jsonUser.HasMember("Navn") || !i_jsonUser["Navn"].IsString())
     {
-        return std::nullopt;
+        return "";
     }
 
     return std::string(i_jsonUser["Navn"].GetString());
 }
 
-void logRuntimeError(const Logger* i_logger, const std::string& i_stage, const std::string& i_message, std::optional<size_t> i_userIndex = std::nullopt, std::optional<std::string> i_userName = std::nullopt)
+std::string formatMessageWithUserContext(const std::string& i_message, size_t i_userIndex, const std::string& i_userName = "")
 {
-    if (i_logger != nullptr)
+    std::string formattedMessage;
+
+    formattedMessage += "[user-index=" + std::to_string(i_userIndex) + "] ";
+
+    if (!i_userName.empty())
     {
-        i_logger->log(LogEntry{ i_stage, "error", std::move(i_userIndex), std::move(i_userName), i_message });
-        return;
+        formattedMessage += "[user-name=" + i_userName + "] ";
     }
 
-    std::cerr << i_message << std::endl;
+    formattedMessage += i_message;
+    return formattedMessage;
 }
 
 } // namespace
 
-bool UserParser::init(const std::string& i_schemaPath)
+UserParser::UserParser()
 {
-    return loadSchema(i_schemaPath);
-}
-
-bool UserParser::loadSchema(const std::string& i_schemaPath)
-{
-    const std::string schemaString = utils::readFile(i_schemaPath);
-    if (schemaString.empty())
+    // Parse the user schema
+    m_userSchemaJson.Parse(c_userSchema);
+    if (m_userSchemaJson.HasParseError())
     {
-        std::cerr << "Failed to read JSON schema file: " << i_schemaPath << std::endl;
-        return false;
+        std::string message = "Built-in schema parse error: " + std::string(rapidjson::GetParseError_En(m_userSchemaJson.GetParseError())) + " at offset " + std::to_string(m_userSchemaJson.GetErrorOffset());
+        LOG_ERROR(LogStage::Parser, message);
+        throw std::runtime_error(message);
     }
 
-    m_schemaJson.Parse(schemaString.c_str());
-    if (m_schemaJson.HasParseError())
+    if (!m_userSchemaJson.IsObject())
     {
-        std::cerr << "Schema parse error: "
-                  << rapidjson::GetParseError_En(m_schemaJson.GetParseError())
-                  << " at offset " << m_schemaJson.GetErrorOffset() << std::endl;
-        return false;
+        std::string message = "Built-in schema must be a JSON object.";
+        LOG_ERROR(LogStage::Parser, message);
+        throw std::runtime_error(message);
     }
 
-    if (!m_schemaJson.HasMember("items") || !m_schemaJson["items"].IsObject())
-    {
-        std::cerr << "Schema is missing an object-valued 'items' definition for single-user validation"
-                  << std::endl;
-        return false;
-    }
-
-    m_userSchemaJson.CopyFrom(m_schemaJson["items"], m_userSchemaJson.GetAllocator());
-
-    m_schema     = std::make_unique<rapidjson::SchemaDocument>(m_schemaJson);
+    // save the compiled schema document for validation
     m_userSchema = std::make_unique<rapidjson::SchemaDocument>(m_userSchemaJson);
-
-    return true;
 }
 
 // -------------------------------------- Parser public methods --------------------------------------
@@ -88,7 +81,7 @@ bool UserParser::parseUserFromFile(const std::string& i_jsonPath, User& io_user)
     const std::string jsonString = utils::readFile(i_jsonPath);
     if (jsonString.empty())
     {
-        std::cerr << "Failed to read JSON file: " << i_jsonPath << std::endl;
+        LOG_ERROR(LogStage::Parser, "Failed to read JSON file: " + i_jsonPath);
         return false;
     }
 
@@ -97,127 +90,88 @@ bool UserParser::parseUserFromFile(const std::string& i_jsonPath, User& io_user)
 
 bool UserParser::parseUser(const std::string& i_jsonString, User& io_user) const
 {
-    if (!m_userSchema)
+    rapidjson::Document userJson;
+    if (!parser_common::parseJsonDocument(i_jsonString, userJson))
     {
-        std::cerr << "UserParser is not initialized with a schema." << std::endl;
         return false;
     }
 
-    rapidjson::Document jsonDocument;
-    jsonDocument.Parse(i_jsonString.c_str());
-
-    if (jsonDocument.HasParseError())
-    {
-        std::cerr << "JSON parse error: "
-                  << rapidjson::GetParseError_En(jsonDocument.GetParseError())
-                  << " at offset " << jsonDocument.GetErrorOffset() << std::endl;
-        return false;
-    }
-
-    ValidationError schemaError;
-    if (!validateSchema(jsonDocument, *m_userSchema, &schemaError))
-    {
-        std::cerr << "Schema validation failed: " << schemaError.message << std::endl;
-        return false;
-    }
-
-    return mapUser(jsonDocument, io_user);
+    return parseUser(userJson, io_user);
 }
 
-bool UserParser::parseUsersFromFile(const std::string& i_jsonPath, std::vector<User>& io_users, std::vector<RecordError>& o_recordErrors, const Logger* i_logger) const
+bool UserParser::parseUsersFromFile(const std::string& i_jsonPath, std::vector<User>& io_users, std::vector<RejectedRecord>& o_rejectedRecords) const
 {
-    const std::string jsonString = utils::readFile(i_jsonPath);
-    if (jsonString.empty())
+    rapidjson::Document jsonDocument;
+    if (!parser_common::parseJsonDocumentFromFile(i_jsonPath, jsonDocument))
     {
-        logRuntimeError(i_logger, "parser", "Failed to read JSON file: " + i_jsonPath);
         return false;
     }
 
-    return parseUsers(jsonString, io_users, o_recordErrors, i_logger);
+    return parseUsers(jsonDocument, io_users, o_rejectedRecords);
 }
 
-bool UserParser::parseUsers(const std::string& i_jsonString, std::vector<User>& io_users, std::vector<RecordError>& o_recordErrors, const Logger* i_logger) const
+bool UserParser::parseUsers(const std::string& i_jsonString, std::vector<User>& io_users, std::vector<RejectedRecord>& o_rejectedRecords) const
 {
-    io_users.clear();
-    o_recordErrors.clear();
-
-    if (!m_userSchema)
-    {
-        logRuntimeError(i_logger, "parser", "UserParser is not initialized with a schema.");
-        return false;
-    }
-
     rapidjson::Document jsonDocument;
-    jsonDocument.Parse(i_jsonString.c_str());
-
-    if (jsonDocument.HasParseError())
+    if (!parser_common::parseJsonDocument(i_jsonString, jsonDocument))
     {
-        std::ostringstream message;
-        message << "JSON parse error: "
-                << rapidjson::GetParseError_En(jsonDocument.GetParseError())
-                << " at offset " << jsonDocument.GetErrorOffset();
-        logRuntimeError(i_logger, "parser", message.str());
         return false;
     }
 
-    if (!jsonDocument.IsArray())
-    {
-        logRuntimeError(i_logger, "parser", "JSON is not an array.");
-        return false;
-    }
-
-    return mapUsers(jsonDocument, io_users, o_recordErrors, i_logger);
+    return parseUsers(jsonDocument, io_users, o_rejectedRecords);
 }
 
 // -------------------------------------- Parser private methods --------------------------------------
 
-bool UserParser::mapUser(const rapidjson::Value& i_jsonUser, User& io_user) const
+bool UserParser::validateUser(const rapidjson::Value& i_jsonUser, ErrorDetail* o_schemaError) const
 {
-    return UserJsonMapper::fromJson(i_jsonUser, io_user);
+    if (!parser_common::validateSchema(i_jsonUser, *m_userSchema, o_schemaError))
+    {
+        LOG_ERROR(LogStage::Parser, "Schema validation failed: " + o_schemaError->toString());
+        return false;
+    }
+
+    return true;
 }
 
-bool UserParser::mapUsers(const rapidjson::Value& i_jsonArray, std::vector<User>& io_users, std::vector<RecordError>& o_recordErrors, const Logger* i_logger) const
+bool UserParser::parseUser(const rapidjson::Value& i_jsonValue, User& io_user, ErrorDetail* o_schemaError) const
+{
+    if (!validateUser(i_jsonValue, o_schemaError))
+    {
+        LOG_ERROR(LogStage::Parser, "Schema validation failed: " + o_schemaError->toString());
+        return false;
+    }
+
+    return mapUser(i_jsonValue, io_user);
+}
+
+bool UserParser::parseUsers(const rapidjson::Value& i_jsonValue, std::vector<User>& io_users, std::vector<RejectedRecord>& o_rejectedRecords) const
 {
     io_users.clear();
+    o_rejectedRecords.clear();
 
-    if (!i_jsonArray.IsArray())
+    if (!i_jsonValue.IsArray())
     {
-        std::cerr << "JSON is not an array." << std::endl;
+        LOG_ERROR(LogStage::Parser, "JSON is not an array.");
         return false;
     }
 
     size_t userIndex = 0;
-    for (const auto& jsonUser : i_jsonArray.GetArray())
+    for (const auto& jsonUser : i_jsonValue.GetArray())
     {
-        const std::optional<std::string> userName = extractUserName(jsonUser);
-
-        ValidationError schemaError;
-        if (!validateSchema(jsonUser, *m_userSchema, &schemaError))
-        {
-            RecordError recordError;
-            recordError.index = userIndex;
-            recordError.name  = userName.value_or("");
-            recordError.errors.push_back(schemaError);
-            o_recordErrors.push_back(std::move(recordError));
-
-            logRuntimeError(i_logger, "schema", schemaError.field + ": " + schemaError.message, userIndex, userName);
-            ++userIndex;
-            continue;
-        }
-
         User user;
-
-        if (!mapUser(jsonUser, user))
+        ErrorDetail schemaError;
+        if (!parseUser(jsonUser, user, &schemaError))
         {
-            ValidationError mappingError{ "record", "Failed to map validated user object." };
+            const std::string userName = extractUserName(jsonUser);
 
-            RecordError recordError;
-            recordError.index = userIndex;
-            recordError.name  = userName.value_or("");
-            recordError.errors.push_back(mappingError);
-            o_recordErrors.push_back(std::move(recordError));
+            RejectedRecord rejectedRecord;
+            rejectedRecord.index = userIndex;
+            rejectedRecord.name  = userName;
+            rejectedRecord.errors.push_back(schemaError);
+            o_rejectedRecords.push_back(std::move(rejectedRecord));
 
-            logRuntimeError(i_logger, "parser", mappingError.field + ": " + mappingError.message, userIndex, userName);
+            LOG_ERROR(LogStage::Parser, formatMessageWithUserContext("Schema validation failed: " + schemaError.toString(), userIndex, userName));
             ++userIndex;
             continue;
         }
@@ -229,36 +183,7 @@ bool UserParser::mapUsers(const rapidjson::Value& i_jsonArray, std::vector<User>
     return true;
 }
 
-// -------------------------------------- Schema validation --------------------------------------
-
-bool UserParser::validateSchema(const rapidjson::Value& i_jsonValue, const rapidjson::SchemaDocument& i_schema, ValidationError* o_error) const
+bool UserParser::mapUser(const rapidjson::Value& i_jsonUser, User& io_user) const
 {
-    rapidjson::SchemaValidator validator(i_schema);
-
-    if (i_jsonValue.Accept(validator))
-    {
-        return true;
-    }
-
-    rapidjson::StringBuffer documentPath;
-    validator.GetInvalidDocumentPointer().StringifyUriFragment(documentPath);
-
-    rapidjson::StringBuffer schemaPath;
-    validator.GetInvalidSchemaPointer().StringifyUriFragment(schemaPath);
-
-    std::ostringstream message;
-    message << "Document path: " << documentPath.GetString()
-            << ", schema path: " << schemaPath.GetString()
-            << ", keyword: " << validator.GetInvalidSchemaKeyword();
-
-    if (o_error != nullptr)
-    {
-        *o_error = ValidationError{ "schema", message.str() };
-    }
-    else
-    {
-        std::cerr << "Schema validation failed. " << message.str() << std::endl;
-    }
-
-    return false;
+    return UserJsonMapper::fromJson(i_jsonUser, io_user);
 }

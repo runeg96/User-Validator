@@ -6,12 +6,13 @@
 #include <string>
 #include <vector>
 
+#include "errors/invalid_user.hpp"
+#include "errors/rejected_record.hpp"
 #include "exporter/export_service.hpp"
 #include "logging/logEntry.hpp"
 #include "logging/logger.hpp"
 #include "parser/user_parser.hpp"
 #include "user.hpp"
-#include "validator/record_error.hpp"
 #include "validator/user_validator.hpp"
 
 namespace {
@@ -19,7 +20,6 @@ namespace {
 struct AppPaths
 {
     std::filesystem::path inputJsonPath;
-    std::filesystem::path schemaPath;
     std::filesystem::path jsonExportPath;
     std::filesystem::path xmlExportPath;
     std::filesystem::path logPath;
@@ -35,21 +35,28 @@ struct AppState
 {
     AppPaths paths;
     std::vector<User> users;
-    std::vector<RecordError> parseErrors;
+    std::vector<RejectedRecord> rejectedRecords;
     ValidationResult validationResult;
-    Logger logger;
     long long parseDurationUs      = 0;
     long long validationDurationUs = 0;
 };
 
-void logMessage(const Logger& i_logger,
-                const std::string& i_stage,
-                const std::string& i_severity,
-                const std::string& i_message,
-                std::optional<size_t> i_userIndex = std::nullopt,
-                std::optional<std::string> i_userName = std::nullopt)
+std::string formatMessageWithUserContext(const std::string& i_message, std::optional<size_t> i_userIndex = std::nullopt, std::optional<std::string> i_userName = std::nullopt)
 {
-    i_logger.log(LogEntry{ i_stage, i_severity, std::move(i_userIndex), std::move(i_userName), i_message });
+    std::string formattedMessage;
+
+    if (i_userIndex.has_value())
+    {
+        formattedMessage += "[user-index=" + std::to_string(*i_userIndex) + "] ";
+    }
+
+    if (i_userName.has_value() && !i_userName->empty())
+    {
+        formattedMessage += "[user-name=" + *i_userName + "] ";
+    }
+
+    formattedMessage += i_message;
+    return formattedMessage;
 }
 
 std::filesystem::path getExecutableDir(const char* i_argv0)
@@ -63,24 +70,21 @@ AppPaths resolvePaths(int i_argc, char* i_argv[])
 
     AppPaths paths;
     paths.inputJsonPath  = i_argc > 1 ? std::filesystem::path(i_argv[1]) : exeDir / "users.json";
-    paths.schemaPath     = i_argc > 2 ? std::filesystem::path(i_argv[2]) : exeDir / "users.schema.json";
-    paths.jsonExportPath = exeDir / "users_export.json";
-    paths.xmlExportPath  = exeDir / "users_export.xml";
+    paths.jsonExportPath = exeDir / "export" / "users_export.json";
+    paths.xmlExportPath  = exeDir / "export" / "users_export.xml";
     paths.logPath        = exeDir / "logs" / "parser.log";
 
     return paths;
 }
 
-ValidationResult validateUsers(const std::vector<User>& i_users,
-                               const UserValidator& i_validator,
-                               const Logger& i_logger)
+ValidationResult validateUsers(const std::vector<User>& i_users, const UserValidator& i_validator)
 {
     ValidationResult result;
 
     for (size_t userIndex = 0; userIndex < i_users.size(); ++userIndex)
     {
-        const auto& user = i_users[userIndex];
-        const std::vector<ValidationError> errors = i_validator.validate(user);
+        const auto& user                      = i_users[userIndex];
+        const std::vector<ErrorDetail> errors = i_validator.validate(user);
 
         if (errors.empty())
         {
@@ -92,12 +96,7 @@ ValidationResult validateUsers(const std::vector<User>& i_users,
 
             for (const auto& error : errors)
             {
-                logMessage(i_logger,
-                           "validator",
-                           "error",
-                           error.field + ": " + error.message,
-                           userIndex,
-                           user.name);
+                LOG_ERROR(LogStage::Validator, formatMessageWithUserContext(error.field + ": " + error.message, userIndex, user.name));
             }
         }
     }
@@ -108,7 +107,7 @@ ValidationResult validateUsers(const std::vector<User>& i_users,
 void printSummary(const AppState& i_state)
 {
     std::cout << "Parsed " << i_state.users.size() << " users\n";
-    std::cout << "Skipped during parser/schema: " << i_state.parseErrors.size() << "\n";
+    std::cout << "Skipped during parser/schema: " << i_state.rejectedRecords.size() << "\n";
     std::cout << "Valid users: " << i_state.validationResult.validUsers.size() << "\n";
     std::cout << "Invalid users: " << i_state.validationResult.invalidUsers.size() << "\n";
     std::cout << "Parsing took " << i_state.parseDurationUs << " us\n";
@@ -118,43 +117,23 @@ void printSummary(const AppState& i_state)
 bool runParser(AppState& io_state)
 {
     UserParser parser;
-    if (!parser.init(io_state.paths.schemaPath.string()))
-    {
-        logMessage(io_state.logger,
-                   "parser",
-                   "error",
-                   "Failed to initialize parser with schema: " + io_state.paths.schemaPath.string());
-        std::cerr << "Failed to initialize parser with schema: "
-                  << io_state.paths.schemaPath << std::endl;
-        return false;
-    }
+    LOG_INFO(LogStage::Parser, "Initialized parser with built-in schema.");
 
-    logMessage(io_state.logger,
-               "parser",
-               "info",
-               "Parsing users from " + io_state.paths.inputJsonPath.string());
+    LOG_INFO(LogStage::Parser, "Parsing users from " + io_state.paths.inputJsonPath.string());
 
     const auto parseStartTime = std::chrono::steady_clock::now();
-    const bool parsed         = parser.parseUsersFromFile(io_state.paths.inputJsonPath.string(),
-                                                  io_state.users,
-                                                  io_state.parseErrors,
-                                                  &io_state.logger);
+    const bool parsed         = parser.parseUsersFromFile(io_state.paths.inputJsonPath.string(), io_state.users, io_state.rejectedRecords);
     const auto parseEndTime   = std::chrono::steady_clock::now();
 
     if (!parsed)
     {
-        std::cerr << "Failed to parse users from: "
-                  << io_state.paths.inputJsonPath << std::endl;
+        LOG_ERROR(LogStage::Parser, "Failed to parse users from: " + io_state.paths.inputJsonPath.string());
         return false;
     }
 
     io_state.parseDurationUs = std::chrono::duration_cast<std::chrono::microseconds>(parseEndTime - parseStartTime).count();
 
-    logMessage(io_state.logger,
-               "parser",
-               "info",
-               "Parsed " + std::to_string(io_state.users.size()) + " users and skipped "
-                   + std::to_string(io_state.parseErrors.size()) + " records during parser/schema stage.");
+    LOG_INFO(LogStage::Parser, "Parsed " + std::to_string(io_state.users.size()) + " users and skipped " + std::to_string(io_state.rejectedRecords.size()) + " records during parser/schema stage.");
 
     return true;
 }
@@ -163,23 +142,15 @@ bool runValidation(AppState& io_state)
 {
     UserValidator validator;
 
-    logMessage(io_state.logger,
-               "validator",
-               "info",
-               "Validating " + std::to_string(io_state.users.size()) + " parsed users.");
+    LOG_INFO(LogStage::Validator, "Validating " + std::to_string(io_state.users.size()) + " parsed users.");
 
     const auto validationStartTime = std::chrono::steady_clock::now();
-    io_state.validationResult      = validateUsers(io_state.users, validator, io_state.logger);
+    io_state.validationResult      = validateUsers(io_state.users, validator);
     const auto validationEndTime   = std::chrono::steady_clock::now();
 
     io_state.validationDurationUs = std::chrono::duration_cast<std::chrono::microseconds>(validationEndTime - validationStartTime).count();
 
-    logMessage(io_state.logger,
-               "validator",
-               "info",
-               "Validation produced " + std::to_string(io_state.validationResult.validUsers.size())
-                   + " valid users and " + std::to_string(io_state.validationResult.invalidUsers.size())
-                   + " invalid users.");
+    LOG_INFO(LogStage::Validator, "Validation produced " + std::to_string(io_state.validationResult.validUsers.size()) + " valid users and " + std::to_string(io_state.validationResult.invalidUsers.size()) + " invalid users.");
 
     return true;
 }
@@ -189,37 +160,21 @@ bool runExporter(const AppState& i_state)
     ExportService exportService;
     if (exportService.exportUsers(i_state.validationResult.validUsers, i_state.paths.jsonExportPath.string()))
     {
-        logMessage(i_state.logger,
-                   "export",
-                   "info",
-                   "Successfully exported valid users to: " + i_state.paths.jsonExportPath.string());
-        std::cout << "Successfully exported valid users to: " << i_state.paths.jsonExportPath << std::endl;
+        LOG_INFO(LogStage::Export, "Successfully exported valid users to: " + i_state.paths.jsonExportPath.string());
     }
     else
     {
-        logMessage(i_state.logger,
-                   "export",
-                   "error",
-                   "Failed to export valid users to: " + i_state.paths.jsonExportPath.string());
-        std::cerr << "Failed to export valid users to: " << i_state.paths.jsonExportPath << std::endl;
+        LOG_ERROR(LogStage::Export, "Failed to export valid users to: " + i_state.paths.jsonExportPath.string());
         return false;
     }
 
     if (exportService.exportUsers(i_state.validationResult.validUsers, i_state.paths.xmlExportPath.string()))
     {
-        logMessage(i_state.logger,
-                   "export",
-                   "info",
-                   "Successfully exported valid users to: " + i_state.paths.xmlExportPath.string());
-        std::cout << "Successfully exported valid users to: " << i_state.paths.xmlExportPath << std::endl;
+        LOG_INFO(LogStage::Export, "Successfully exported valid users to: " + i_state.paths.xmlExportPath.string());
     }
     else
     {
-        logMessage(i_state.logger,
-                   "export",
-                   "error",
-                   "Failed to export valid users to: " + i_state.paths.xmlExportPath.string());
-        std::cerr << "Failed to export valid users to: " << i_state.paths.xmlExportPath << std::endl;
+        LOG_ERROR(LogStage::Export, "Failed to export valid users to: " + i_state.paths.xmlExportPath.string());
         return false;
     }
 
@@ -232,9 +187,8 @@ int main(int argc, char* argv[])
 {
     AppState state;
     state.paths = resolvePaths(argc, argv);
-    state.logger.setMirrorToConsole(true);
 
-    if (!state.logger.initialize(state.paths.logPath))
+    if (!Logger::initializeDefault(state.paths.logPath, true))
     {
         std::cerr << "Failed to initialize runtime logger at: " << state.paths.logPath << std::endl;
         return 1;
@@ -252,18 +206,12 @@ int main(int argc, char* argv[])
 
     printSummary(state);
 
-    logMessage(state.logger,
-               "summary",
-               "info",
-               "Run summary: parsed=" + std::to_string(state.users.size())
-                   + ", skipped=" + std::to_string(state.parseErrors.size())
-                   + ", valid=" + std::to_string(state.validationResult.validUsers.size())
-                   + ", invalid=" + std::to_string(state.validationResult.invalidUsers.size()));
-
     if (!runExporter(state))
     {
         return 1;
     }
+
+    LOG_INFO(LogStage::Summary, "Run summary: parsed=" + std::to_string(state.users.size()) + ", skipped=" + std::to_string(state.rejectedRecords.size()) + ", valid=" + std::to_string(state.validationResult.validUsers.size()) + ", invalid=" + std::to_string(state.validationResult.invalidUsers.size()));
 
     return 0;
 }
