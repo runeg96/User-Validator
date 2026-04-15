@@ -1,27 +1,7 @@
 #include "exporter/xml_exporter.hpp"
 
 #include "pugixml.hpp"
-
-namespace {
-
-std::string joinPlatforms(const std::vector<std::string>& i_platforms)
-{
-    std::string result;
-
-    for (size_t i = 0; i < i_platforms.size(); ++i)
-    {
-        if (i > 0)
-        {
-            result += ", ";
-        }
-
-        result += i_platforms[i];
-    }
-
-    return result;
-}
-
-} // namespace
+#include "utils/utils.hpp"
 
 bool XmlExporter::exportUsers(const std::vector<User>& i_users, const std::string& i_exportPath) const
 {
@@ -42,7 +22,7 @@ bool XmlExporter::exportUsers(const std::vector<User>& i_users, const std::strin
         userNode.append_child("Navn").text().set(user.name.c_str());
         userNode.append_child("Alder").text().set(user.age);
         userNode.append_child("Email").text().set(user.email.c_str());
-        userNode.append_child("Spilleplatform").text().set(joinPlatforms(user.platforms).c_str());
+        userNode.append_child("Spilleplatform").text().set(utils::joinPlatforms(user.platforms).c_str());
         userNode.append_child("Oprettelsesdato").text().set(user.createdAt.c_str());
 
         pugi::xml_node mobileNode = userNode.append_child("Mobilnummer");
