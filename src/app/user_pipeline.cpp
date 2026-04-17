@@ -51,8 +51,6 @@ void UserPipeline::validateUsers(const std::vector<User>& i_users, const UserVal
 bool UserPipeline::parse(AppState& io_state) const
 {
     UserParser parser;
-    LOG_INFO(LogStage::Parser, "Initialized parser with schema.");
-
     LOG_INFO(LogStage::Parser, "Parsing users from " + io_state.inputJsonPath.string());
 
     const auto parseStartTime = std::chrono::steady_clock::now();
