@@ -1,0 +1,17 @@
+FROM fedora:41
+
+RUN dnf install -y gcc-c++ cmake make git && \
+    dnf clean all
+
+WORKDIR /app
+COPY . .
+
+RUN git submodule update --init --recursive || true
+
+RUN mkdir -p build && cd build && \
+    cmake .. -DCMAKE_BUILD_TYPE=Release && \
+    make -j$(nproc)
+
+WORKDIR /app/build
+
+CMD ["./json_parser"]
