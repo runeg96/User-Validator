@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, master]
+  pull_request:
+    branches: [develop, master]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - distro: ubuntu
+            image: ubuntu:22.04
+            install: |
+              apt-get update
+              apt-get install -y --no-install-recommends build-essential cmake git ca-certificates
+          - distro: ubuntu-24
+            image: ubuntu:24.04
+            install: |
+              apt-get update
+              apt-get install -y --no-install-recommends build-essential cmake git ca-certificates
+          - distro: fedora-40
+            image: fedora:40
+            install: dnf install -y gcc-c++ cmake make git
+          - distro: fedora-41
+            image: fedora:41
+            install: dnf install -y gcc-c++ cmake make git
+          - distro: debian-12
+            image: debian:12
+            install: |
+              apt-get update
+              apt-get install -y --no-install-recommends build-essential cmake git ca-certificates
+
+    name: ${{ matrix.distro }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.image }}
+
+    steps:
+      - name: Install dependencies
+        run: ${{ matrix.install }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build -j$(nproc)
+
+      - name: Test
+        working-directory: build
+        run: ctest --output-on-failure
+
+      - name: Run application
+        working-directory: build
+        run: ./json_parser run_pipeline
