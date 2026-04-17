@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [develop, master]
+    branches: [master]
   pull_request:
-    branches: [develop, master]
+    branches: [master]
 
 jobs:
   build:
@@ -60,4 +60,4 @@ jobs:
 
       - name: Run application
         working-directory: build
-        run: ./json_parser run_pipeline
+        run: ./user_validator run_pipeline
