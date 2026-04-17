@@ -27,6 +27,9 @@ target_include_directories(pugixml
 )
 
 add_executable(json_parser
+    src/app/app_summary.cpp
+    src/app/command_dispatcher.cpp
+    src/app/user_pipeline.cpp
     src/parser/parser_common.cpp
     src/parser/user_parser.cpp
     src/utils/utils.cpp
@@ -59,3 +62,59 @@ target_link_libraries(json_parser PRIVATE pugixml)
 install(TARGETS json_parser
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+# ── Testing ──────────────────────────────────────────────────────────
+option(BUILD_TESTS "Build unit tests" ON)
+
+if(BUILD_TESTS)
+    # Build GTest from local external/ copy (no network dependency).
+    set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+    set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
+    add_subdirectory(external/googletest)
+
+    enable_testing()
+
+    # Shared sources needed by the tests (everything except main.cpp).
+    set(APP_SOURCES
+        src/app/app_summary.cpp
+        src/app/command_dispatcher.cpp
+        src/app/user_pipeline.cpp
+        src/parser/parser_common.cpp
+        src/parser/user_parser.cpp
+        src/utils/utils.cpp
+        src/validator/user_rules.cpp
+        src/validator/user_validator.cpp
+        src/mapper/user_json_mapper.cpp
+        src/exporter/json_exporter.cpp
+        src/exporter/xml_exporter.cpp
+        src/exporter/exporter_factory.cpp
+        src/exporter/export_service.cpp
+        src/logging/logger.cpp
+    )
+
+    add_executable(json_parser_tests
+        tests/test_utils.cpp
+        tests/test_validator.cpp
+        tests/test_parser.cpp
+        ${APP_SOURCES}
+    )
+
+    target_include_directories(json_parser_tests
+        PRIVATE
+            ${CMAKE_SOURCE_DIR}/src
+            ${CMAKE_SOURCE_DIR}/external/rapidjson/include
+    )
+
+    target_compile_features(json_parser_tests PRIVATE cxx_std_17)
+    set_target_properties(json_parser_tests PROPERTIES CXX_EXTENSIONS OFF)
+
+    target_link_libraries(json_parser_tests
+        PRIVATE
+            gtest
+            gtest_main
+            pugixml
+    )
+
+    include(GoogleTest)
+    gtest_discover_tests(json_parser_tests)
+endif()
