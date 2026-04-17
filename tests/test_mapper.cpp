@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-
 #include <rapidjson/document.h>
 
 #include "mapper/user_json_mapper.hpp"
@@ -156,7 +155,7 @@ TEST(UserJsonMapperTest, RoundTripPreservesData)
     const User original = makeTestUser();
 
     rapidjson::Document doc;
-    auto& allocator = doc.GetAllocator();
+    auto& allocator       = doc.GetAllocator();
     rapidjson::Value json = UserJsonMapper::toJson(original, allocator);
 
     User restored;
