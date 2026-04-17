@@ -6,7 +6,7 @@ A C++17 command-line tool that reads user records from a JSON file, validates th
 
 ### Prerequisites
 
-- C++17 compiler (GCC 7+, Clang 5+)
+- C++17 compiler
 - CMake 3.12+
 - Git
 
@@ -46,6 +46,16 @@ cd build
 | `export_users`   | Parse, validate, and export valid users                  |
 | `run_pipeline`   | Run the full pipeline (default when no command is given) |
 
+## Dependencies
+
+All included as git submodules in `external/` — no system packages needed.
+
+| Library    | Purpose                                      |
+| ---------- | -------------------------------------------- |
+| RapidJSON  | JSON parsing, schema validation, JSON export |
+| pugixml    | XML export                                   |
+| GoogleTest | Unit testing                                 |
+
 ## Testing
 
 ```bash
@@ -63,16 +73,6 @@ docker run --rm user_validator:ubuntu
 ```
 
 A Fedora Dockerfile is also provided (`Dockerfile.fedora`).
-
-## Dependencies
-
-All included as git submodules in `external/` — no system packages needed.
-
-| Library    | Purpose                                      |
-| ---------- | -------------------------------------------- |
-| RapidJSON  | JSON parsing, schema validation, JSON export |
-| pugixml    | XML export                                   |
-| GoogleTest | Unit testing                                 |
 
 ## Validation
 
