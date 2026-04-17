@@ -1,5 +1,6 @@
 #include "exporter/export_service.hpp"
 
+#include <filesystem>
 #include <iostream>
 #include <memory>
 
@@ -8,6 +9,21 @@
 
 bool ExportService::exportUsers(const std::vector<User>& i_users, const std::string& i_exportPath) const
 {
+    const std::filesystem::path exportPath(i_exportPath);
+    const std::filesystem::path parentPath = exportPath.parent_path();
+
+    if (!parentPath.empty())
+    {
+        std::error_code errorCode;
+        std::filesystem::create_directories(parentPath, errorCode);
+
+        if (errorCode)
+        {
+            std::cerr << "Failed to create export directory: " << parentPath << std::endl;
+            return false;
+        }
+    }
+
     std::unique_ptr<IExporter> exporter = ExporterFactory::createFromPath(i_exportPath);
     if (!exporter)
     {

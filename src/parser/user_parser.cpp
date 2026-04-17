@@ -1,6 +1,5 @@
 #include "user_parser.hpp"
 
-#include "logging/logEntry.hpp"
 #include "logging/logger.hpp"
 #include "mapper/user_json_mapper.hpp"
 #include "parser/parser_common.hpp"
@@ -127,7 +126,10 @@ bool UserParser::validateUser(const rapidjson::Value& i_jsonUser, ErrorDetail* o
 {
     if (!parser_common::validateSchema(i_jsonUser, *m_userSchema, o_schemaError))
     {
-        LOG_ERROR(LogStage::Parser, "Schema validation failed: " + o_schemaError->toString());
+        if (o_schemaError)
+        {
+            LOG_ERROR(LogStage::Parser, "Schema validation failed: " + o_schemaError->toString());
+        }
         return false;
     }
 
@@ -138,7 +140,10 @@ bool UserParser::parseUser(const rapidjson::Value& i_jsonValue, User& io_user, E
 {
     if (!validateUser(i_jsonValue, o_schemaError))
     {
-        LOG_ERROR(LogStage::Parser, "Schema validation failed: " + o_schemaError->toString());
+        if (o_schemaError)
+        {
+            LOG_ERROR(LogStage::Parser, "Schema validation failed: " + o_schemaError->toString());
+        }
         return false;
     }
 
@@ -168,6 +173,7 @@ bool UserParser::parseUsers(const rapidjson::Value& i_jsonValue, std::vector<Use
             RejectedRecord rejectedRecord;
             rejectedRecord.index = userIndex;
             rejectedRecord.name  = userName;
+            rejectedRecord.jsonValue.CopyFrom(jsonUser, rejectedRecord.jsonValue.GetAllocator());
             rejectedRecord.errors.push_back(schemaError);
             o_rejectedRecords.push_back(std::move(rejectedRecord));
 

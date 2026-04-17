@@ -26,11 +26,7 @@ std::string getTimestamp()
     const std::time_t nowTime = std::chrono::system_clock::to_time_t(now);
 
     std::tm localTime{};
-#if defined(_WIN32)
-    localtime_s(&localTime, &nowTime);
-#else
     localtime_r(&nowTime, &localTime);
-#endif
 
     std::ostringstream stream;
     stream << std::put_time(&localTime, "%Y-%m-%d %H:%M:%S");
