@@ -14,7 +14,7 @@ namespace {
 std::string buildHelpMessage()
 {
     std::ostringstream help;
-    help << "Usage: json_parser [command]\n\n";
+    help << "Usage: user_validator [command]\n\n";
     help << "Commands:\n";
     help << "  " << app_commands::c_parseUsersCommandName << "     Parse users from users.json\n";
     help << "  " << app_commands::c_validateUsersCommandName << "  Parse and validate users\n";

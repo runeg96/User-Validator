@@ -17,7 +17,7 @@ A C++17 command-line tool that reads user records from a JSON file, validates th
 
 ```bash
 git clone https://github.com/runeg96/User-Validator.git
-cd json_parser
+cd User-Validator
 git submodule update --init --recursive
 mkdir build && cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
